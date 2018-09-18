@@ -63,7 +63,8 @@
          };
 	 Chartist.Pie('#ramPie', dataPreferences, optionsPreferences);
          Chartist.Pie('#ramPie', {
-            labels: [freePer.toFixed(2) + '%', usedPer.toFixed(2) + '%'],
+            //labels: [freePer.toFixed(2) + '%', usedPer.toFixed(2) + '%'],
+	    labels: [' ',' ',' '],
             series: [freePer, usedPer]
          });
       }
@@ -95,8 +96,6 @@
             var sysPer1 = (sys1 / total1) * 100;
             var idlePer1 = (idle1 / total1) * 100;
 
-	    console.log('user0: ', user0, '. sys0: ', sys0, '. idle0: ', idle0);   
-	    console.log('user1: ', user1, '. sys1: ', sys1, '. idle1: ', idle1); 
 
             var optionsPreferences0 = {
                donut: true,
@@ -124,13 +123,15 @@
          };
          Chartist.Pie('#cpu0Pie', dataPreferences, optionsPreferences0);
          Chartist.Pie('#cpu0Pie', {
-            labels: [userPer0.toFixed(2) + '%', sysPer0.toFixed(2) + '%', idlePer0.toFixed(2) + '%'],
+            //labels: [userPer0.toFixed(2) + '%', sysPer0.toFixed(2) + '%', idlePer0.toFixed(2) + '%'],
+	    labels: [' ',' ',' '],
             series: [userPer0, sysPer0, idlePer0]
          });
 
         Chartist.Pie('#cpu1Pie', dataPreferences, optionsPreferences1);
         Chartist.Pie('#cpu1Pie', {
-           labels: [userPer1.toFixed(2) + '%', sysPer1.toFixed(2) + '%', idlePer1.toFixed(2) + '%'],
+           //labels: [userPer1.toFixed(2) + '%', sysPer1.toFixed(2) + '%', idlePer1.toFixed(2) + '%'],
+	    labels: [' ',' ',' '],
             series: [userPer1, sysPer1, idlePer1]
          });
 
@@ -147,8 +148,6 @@
       xttp.onreadystatechange = function(){
          if (xttp.readyState == 4) {
             var jsonObj = JSON.parse(xttp.responseText);
-            //var len = jsonObj.length;
-            //console.log(len);
 	    var table="<thead><th>Route Name</th><th>Promised</th><th>Last Scan Time</th><th>Last Scan By</th><th>Last Scan At</th></thead><tbody>";
 	    for(i=0; i < jsonObj.length; i++) {
 	       table += "<tr><td>" + jsonObj[i]['RouteName'];
@@ -172,8 +171,7 @@
       xttp.onreadystatechange = function(){
          if (xttp.readyState == 4) {
 	    var jsonObj = JSON.parse(xttp.responseText);
-	    //console.log(jsonObj);
-	    document.getElementById('email').innerHTML = jsonObj.substring(0,20);;
+	    document.getElementById('email').innerHTML = jsonObj.substring(0,20);
 	 }
       }
       xttp.open("GET", data_file, true);
