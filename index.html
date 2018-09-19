@@ -57,9 +57,7 @@
             };
          }
          var dataPreferences = {
-            series: [
-                    [25,30,20,25]
-            ]
+            series: [25,30,20,25]
          };
 	 Chartist.Pie('#ramPie', dataPreferences, optionsPreferences);
          Chartist.Pie('#ramPie', {
@@ -67,6 +65,8 @@
 	    labels: [' ',' ',' '],
             series: [freePer, usedPer]
          });
+	 document.getElementById('rf').innerHTML = 'Free: ' + free + ' GB';
+	 document.getElementById('ru').innerHTML = 'Used: ' + used + ' GB'; 
       }
       xttp.open("GET", data_file, true);
       xttp.send();
@@ -88,6 +88,10 @@
 	    var sysPer0 = (sys0 / total0) * 100;
 	    var idlePer0 = (idle0 / total0) * 100;
 
+	    document.getElementById('u0').innerHTML = 'User: ' + user0 + '%';
+	    document.getElementById('s0').innerHTML = 'Sys: ' + sys0 + '%';
+	    document.getElementById('i0').innerHTML = 'Idle: ' + idle0 + '%';
+
             var user1 = jsonObj['cpu1']['user'];
             var sys1 = jsonObj['cpu1']['sys'];
             var idle1 = jsonObj['cpu1']['idle'];
@@ -96,6 +100,9 @@
             var sysPer1 = (sys1 / total1) * 100;
             var idlePer1 = (idle1 / total1) * 100;
 
+            document.getElementById('u1').innerHTML = 'User: ' + user1 + '%';
+            document.getElementById('s1').innerHTML = 'Sys: ' + sys1 + '%';
+            document.getElementById('i1').innerHTML = 'Idle: ' + idle1 + '%';
 
             var optionsPreferences0 = {
                donut: true,
@@ -171,7 +178,17 @@
       xttp.onreadystatechange = function(){
          if (xttp.readyState == 4) {
 	    var jsonObj = JSON.parse(xttp.responseText);
-	    document.getElementById('email').innerHTML = jsonObj.substring(0,20);
+	    if (jsonObj['status'] == 'UP') {
+	       card = '<div class="panel panel-success">';
+	       card += '<div class="panel-heading">Email Server Status: Up</div></div>';
+	       document.getElementById('email').innerHTML = card;
+	    }
+            else {
+               card = '<div class="panel panel-danger">';
+               card += '<div class="panel-heading">Email Server Status: Down</div></div>';
+               document.getElementById('email').innerHTML = card;
+            }
+
 	 }
       }
       xttp.open("GET", data_file, true);
@@ -187,53 +204,53 @@
 
    window.addEventListener("load", function(){
       loadAll();
+      window.setInterval(function(){
+         loadAll();
+      }, 60000);
    }); 
    </script>
    <div class="container-fluid">
       <div class="row">
-         <div class="col-sm-4">
-	 <div class="card">
-	 <div class="card-body"> 
-	    <h4 class="card-title">RAM Usage</h4>
-            <div id="ramPie" class="ct-chart"></div>
-            <h6>Legend</h6>
-            <i class="fa fa-circle text-info"></i> Free
-            <i class="fa fa-circle text-danger"></i> Used
-	 </div>
-	 </div>
-	 </div>
 	 <div class="col-sm-4">
 	 <div class="card">
 	 <div class="card-body">
-	    <h4 class="card-title">Cpu0 Usage</h4>
+	    <h4 class="card-title">Cpu 1 Usage</h4>
 	    <div id="cpu0Pie" class="ct-chart"></div>
             <h6>Legend</h6>
-            <i class="fa fa-circle text-info"></i> User
-            <i class="fa fa-circle text-danger"></i> Sys
-	    <i class="fa fa-circle text-warning"></i> Idle
+            <i class="fa fa-circle text-info"></i> <span id="u0"></span>
+            <i class="fa fa-circle text-danger"></i> <span id="s0"></span>
+	    <i class="fa fa-circle text-warning"></i> <span id="i0"></span>
 	 </div>
 	 </div>
 	 </div>
 	 <div class="col-sm-4">
 	 <div class="card">
 	 <div class="card-body">
-            <h4 class="card-title">Cpu1 Usage</h4>
+            <h4 class="card-title">Cpu 2 Usage</h4>
             <div id="cpu1Pie" class="ct-chart"></div>
             <h6>Legend</h6>
-            <i class="fa fa-circle text-info"></i> User
-            <i class="fa fa-circle text-danger"></i> Sys
-	    <i class="fa fa-circle text-warning"></i> Idle
+            <i class="fa fa-circle text-info"></i> <span id="u1"></span>
+            <i class="fa fa-circle text-danger"></i> <span id="s1"></span>
+	    <i class="fa fa-circle text-warning"></i> <span id="i1"></span>
+
          </div>
 	 </div>
 	 </div>
+         <div class="col-sm-4">
+         <div class="card">
+         <div class="card-body">
+            <h4 class="card-title">RAM Usage</h4>
+            <div id="ramPie" class="ct-chart"></div>
+            <h6>Legend</h6>
+            <i class="fa fa-circle text-info"></i> <span id="rf"></span>
+            <i class="fa fa-circle text-danger"></i> <span id="ru"></span>
+         </div>
+         </div>
+         </div>
+
       </div>
 
-      <div class="card">
-	<div class="card-body">
-	  <h4 class="card-title">Email Server Status</h4>
-          <p id='email'><p>
-	</div>
-      </div>
+      <div id="email"></div>
 
       <div class="card">
          <div class="table-responsive">
